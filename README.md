@@ -1,2 +1,3 @@
-# syabureyo
-ルナチャにきのこをしゃぶらせるunityのゲームです
+﻿# syabureyo
+マラチャにきのこをしゃぶらせるunityのゲームです
+
