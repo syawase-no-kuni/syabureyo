@@ -1,67 +1,49 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-/// サウンド管理
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
     [SerializeField]
-    private float volume;
+    [Range(0, 1)]
+    private float volume = 0.5f;
 
-    /// SEチャンネル数
-    const int SE_CHANNEL = 4;
+    static readonly int SeChanels = 4;
 
-    /// サウンド種別
-    enum eType
+    enum AudioType
     {
-        Bgm, // BGM
-        Se,  // SE
+        Bgm,
+        Se,
     }
 
-
-    // サウンド再生のためのゲームオブジェクト
-    [SerializeField]
     GameObject _object = null;
 
-    // サウンドリソース
-    AudioSource _sourceBgm = null; // BGM
-    AudioSource _sourceSeDefault = null; // SE (デフォルト)
-    AudioSource[] _sourceSeArray; // SE (チャンネル)
+    AudioSource _sourceBgm = null;
+    AudioSource _sourceSeDefault = null;
+    AudioSource[] _sourceSeArray;
    
-    // BGMにアクセスするためのテーブル
     Dictionary<string, AudioData> _poolBgm = new Dictionary<string, AudioData>();
-    // SEにアクセスするためのテーブル 
     Dictionary<string, AudioData> _poolSe = new Dictionary<string, AudioData>();
 
-    /// 保持するデータ
     class AudioData
     {
-        /// アクセス用のキー
         public string Key;
-        /// リソース名
         public string ResName;
-        /// AudioClip
         public AudioClip Clip;
 
-        /// コンストラクタ
         public AudioData(string key, string res)
         {
             Key = key;
             ResName = "AudioData/" + res;
-            // AudioClipの取得
             Clip = Resources.Load(ResName) as AudioClip;
         }
     }
 
-    /// コンストラクタ
     public AudioManager()
     {
-        // チャンネル確保
-        _sourceSeArray = new AudioSource[SE_CHANNEL];
+        _sourceSeArray = new AudioSource[SeChanels];
     }
 
-    /// AudioSourceを取得する
-    AudioSource _GetAudioSource(eType type, int channel = -1)
+    AudioSource _GetAudioSource(AudioType type, int channel = -1)
     {
         if(_object == null)
         {
@@ -75,13 +57,13 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
             // AudioSourceを作成
             _sourceBgm = _object.AddComponent<AudioSource>();
             _sourceSeDefault = _object.AddComponent<AudioSource>();
-            for(int i = 0; i < SE_CHANNEL; i++)
+            for(int i = 0; i < SeChanels; i++)
             {
                 _sourceSeArray[i] = _object.AddComponent<AudioSource>();
             }
         }
 
-        if(type == eType.Bgm)
+        if(type == AudioType.Bgm)
         {
             // BGM
             return _sourceBgm;
@@ -89,7 +71,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         else
         {
             // SE
-            if(0 <= channel && channel < SE_CHANNEL)
+            if(0 <= channel && channel < SeChanels)
             {
                 // チャンネル指定
                 return _sourceSeArray[channel];
@@ -104,8 +86,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
     #region LoadAudio
 
-    // サウンドのロード
-    // ※Resources/Soundsフォルダに配置すること
     public static void LoadBgm(string key, string resName)
     {
         Instance._LoadBgm(key, resName);
@@ -116,18 +96,18 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     }
     void _LoadBgm(string key, string resName)
     {
+        // すでに登録済みだった場合、上書きする
         if(_poolBgm.ContainsKey(key))
         {
-            // すでに登録済みなのでいったん消す
             _poolBgm.Remove(key);
         }
         _poolBgm.Add(key, new AudioData(key, resName));
     }
     void _LoadSe(string key, string resName)
     {
+        // すでに登録済みだった場合、上書きする
         if(_poolSe.ContainsKey(key))
         {
-            // すでに登録済みなのでいったん消す
             _poolSe.Remove(key);
         }
         _poolSe.Add(key, new AudioData(key, resName));
@@ -137,8 +117,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
     #region PlayAudio
 
-    /// BGMの再生
-    /// ※事前にLoadBgmでロードしておくこと
     public static bool PlayBgm(string key)
     {
         return Instance._PlayBgm(key);
@@ -147,7 +125,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     {
         if(_poolBgm.ContainsKey(key) == false)
         {
-            // 対応するキーがない
+            Debug.LogWarning("PlayBgm key=" + key + "は読み込まれていません！");
             return false;
         }
 
@@ -158,27 +136,24 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         var _data = _poolBgm[key];
 
         // 再生
-        var source = _GetAudioSource(eType.Bgm);
+        var source = _GetAudioSource(AudioType.Bgm);
         source.loop = true;
         source.clip = _data.Clip;
+        source.volume = volume;
         source.Play();
 
         return true;
     }
-    /// BGMの停止
     public static bool StopBgm()
     {
         return Instance._StopBgm();
     }
     bool _StopBgm()
     {
-        _GetAudioSource(eType.Bgm).Stop();
-
+        _GetAudioSource(AudioType.Bgm).Stop();
         return true;
     }
 
-    /// SEの再生
-    /// ※事前にLoadSeでロードしておくこと
     public static bool PlaySe(string key, int channel = -1)
     {
         return Instance._PlaySe(key, channel);
@@ -187,25 +162,27 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     {
         if(_poolSe.ContainsKey(key) == false)
         {
-            // 対応するキーがない
+            Debug.LogWarning("PlaySe key=" + key + "は読み込まれていません！");
             return false;
         }
 
         // リソースの取得
         var _data = _poolSe[key];
 
-        if(0 <= channel && channel < SE_CHANNEL)
+        if(0 <= channel && channel < SeChanels)
         {
             // チャンネル指定
-            var source = _GetAudioSource(eType.Se, channel);
+            var source = _GetAudioSource(AudioType.Se, channel);
             source.clip = _data.Clip;
+            source.volume = volume;
             source.Play();
         }
         else
         {
             // デフォルトで再生
-            var source = _GetAudioSource(eType.Se);
+            var source = _GetAudioSource(AudioType.Se);
             source.PlayOneShot(_data.Clip);
+            source.volume = volume;
         }
 
         return true;
