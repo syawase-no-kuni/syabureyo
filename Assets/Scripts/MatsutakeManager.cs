@@ -9,8 +9,12 @@ public class MatsutakeManager : MonoBehaviour {
     readonly float movableMaxY = Screen.height / 2.0f;
     readonly float movableMinY = Screen.height / 4.0f;
 
+    GameManager gameManager;
+
     // Use this for initialization
     void Start () {
+        gameManager = FindObjectOfType<GameManager>();
+
         StartCoroutine("MouseTest");
     }
 	
@@ -29,10 +33,12 @@ public class MatsutakeManager : MonoBehaviour {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 
             // マウスの移動量を取得
+            /*
             float sensitivity = 0.1f;
             float mouse_move_x = Input.GetAxis("Mouse X") * sensitivity;
             float mouse_move_y = Input.GetAxis("Mouse Y") * sensitivity;
-            //Debug.Log(mouse_move_x + " : " + mouse_move_y);
+            Debug.Log(mouse_move_x + " : " + mouse_move_y);
+            */
 
             if (freeMoveFlg)
             {
