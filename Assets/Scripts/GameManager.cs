@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
         // 別オブジェクトのきのこを取得
         // FindObjectOfTypeメソッドは、シーン全てを検索するらしい
         matsutakeManager = FindObjectOfType<MatsutakeManager>();
+
+        matsutakeManager.gotScore += AddGauge;
 	}
 	
 	// Update is called once per frame

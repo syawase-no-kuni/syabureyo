@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class MatsutakeManager : MonoBehaviour {
@@ -10,6 +11,8 @@ public class MatsutakeManager : MonoBehaviour {
     readonly float movableMinY = Screen.height / 4.0f;
 
     GameManager gameManager;
+
+    public event Action<float> gotScore;
 
     // Use this for initialization
     void Start () {
@@ -39,6 +42,11 @@ public class MatsutakeManager : MonoBehaviour {
             float mouse_move_y = Input.GetAxis("Mouse Y") * sensitivity;
             Debug.Log(mouse_move_x + " : " + mouse_move_y);
             */
+
+            if(gotScore != null)
+            {
+                gotScore(10);
+            }
 
             if (freeMoveFlg)
             {
