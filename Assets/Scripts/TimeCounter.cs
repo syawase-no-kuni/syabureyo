@@ -20,7 +20,7 @@ public class TimeCounter : MonoBehaviour {
             timeOutFlg = true;
         }
 
-        Debug.Log(timeCount);
+        //Debug.Log(timeCount);
 	}
 
     public bool isTimeOut()

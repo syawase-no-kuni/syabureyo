@@ -7,8 +7,8 @@ public class MatsutakeManager : MonoBehaviour {
     bool freeMoveFlg = false;
     Vector3 screenPoint;
 
-    readonly float movableMaxY = Screen.height / 2.0f;
-    readonly float movableMinY = Screen.height / 4.0f;
+    readonly float movableMaxY = Screen.height / 4.0f;
+    readonly float movableMinY = Screen.height / 8.0f;
 
     GameManager gameManager;
 
@@ -57,17 +57,8 @@ public class MatsutakeManager : MonoBehaviour {
             {
                 // 上下にのみきのこを動かせる(動ける範囲に制限あり)
                 // X軸を中央（口のある座標）に固定
-                mousePosition = new Vector3(Screen.width / 2.0f, mousePosition.y, mousePosition.z);
-
-                // 上下の上限
-                if (mousePosition.y >= movableMaxY)
-                {
-                    mousePosition = new Vector3(mousePosition.x, movableMaxY, mousePosition.z);
-                }
-                else if (mousePosition.y <= movableMinY)
-                {
-                    mousePosition = new Vector3(mousePosition.x, movableMinY, mousePosition.z);
-                }
+                mousePosition = new Vector3(Screen.width / 2.0f, Mathf.Clamp(mousePosition.y, movableMinY, movableMaxY), mousePosition.z);
+                
 
                 transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
             }
