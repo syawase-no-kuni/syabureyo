@@ -56,13 +56,13 @@ public class SimpleModel : MonoBehaviour
         }
 
         var pos = Input.mousePosition;
-        dragMgr.Set(pos.x / Screen.width * 2 - 1, pos.y / Screen.height * 4 - 1);
+        dragMgr.Set(pos.x / Screen.width * 2 - 1, pos.y / Screen.height * 4 - 0.2f);
 
         dragMgr.update();
         live2DModel.setParamFloat("PARAM_ANGLE_X", dragMgr.getX() * 30);
         live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 30);
 
-        Debug.Log(dragMgr.getY());
+//        Debug.Log(dragMgr.getY());
 
         live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", dragMgr.getX() * -10);
 

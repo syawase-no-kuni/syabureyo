@@ -7,7 +7,7 @@ public class MatsutakeManager : MonoBehaviour {
     bool freeMoveFlg = false;
     Vector3 screenPoint;
 
-    readonly float movableMaxY = Screen.height / 4.0f;
+    readonly float movableMaxY = Screen.height / 2.5f;
     readonly float movableMinY = Screen.height / 8.0f;
 
     GameManager gameManager;
@@ -57,8 +57,18 @@ public class MatsutakeManager : MonoBehaviour {
             {
                 // 上下にのみきのこを動かせる(動ける範囲に制限あり)
                 // X軸を中央（口のある座標）に固定
-                mousePosition = new Vector3(Screen.width / 2.0f, Mathf.Clamp(mousePosition.y, movableMinY, movableMaxY), mousePosition.z);
-                
+                mousePosition = new Vector3(Screen.width / 2f - 5f, Mathf.Clamp(mousePosition.y, movableMinY, movableMaxY), mousePosition.z);
+
+                // きのこを出し入れするときにOffsetをいじることで
+                // きのこ上部が隠れて咥えているように見える
+                //float offset = - (mousePosition.y - movableMinY) / ((movableMaxY - movableMinY) * 4);
+                float offset = 0;
+                float kuriY = (Screen.height / 4.0f);
+                if (mousePosition.y >= kuriY)
+                {
+                    offset = -0.3f + (movableMaxY - mousePosition.y) / movableMaxY;
+                }
+                GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(0, offset*2));
 
                 transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
             }
