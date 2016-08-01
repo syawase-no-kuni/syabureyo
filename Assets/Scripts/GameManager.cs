@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour {
 
     GaugeCounter gaugeCounter;
     TimeCounter timeCounter;
+
     MatsutakeManager matsutakeManager;
+    SimpleModel simpleModel;
+
+    bool gameStart = false;
+
+    bool piston = false;
+    float backPosY = -1f;
 
 	// Use this for initialization
 	void Start () {
@@ -13,22 +21,61 @@ public class GameManager : MonoBehaviour {
         gaugeCounter = GetComponent<GaugeCounter>();
         timeCounter = GetComponent<TimeCounter>();
 
-        // 別オブジェクトのきのこを取得
-        // FindObjectOfTypeメソッドは、シーン全てを検索するらしい
+        // ゲーム開始時のまつたけクラスのgameStartイベントをフック
         matsutakeManager = FindObjectOfType<MatsutakeManager>();
+        matsutakeManager.gameStart += GameStart;
 
-        matsutakeManager.gotScore += AddGauge;
+        // SimpleModelクラス（ルナチャ）を取得
+        simpleModel = FindObjectOfType<SimpleModel>();
+        
+    }
+
+    // Update is called once per frame
+    void Update () {
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // ゲーム開始処理
+    public void GameStart()
+    {
+        simpleModel.GameStart();
+        gameStart = true;
+        StartCoroutine("GameMain");
+    }
+
+    // ゲームメインループ
+    IEnumerator GameMain()
+    {
+        while (true)
+        {
+            // きのこのY座標を取得
+            float dragMgrY = simpleModel.GetDragManagerY();
+            Debug.Log(dragMgrY);
+
+            // きのこを口に入れたらピストンフラグをオンにし、
+            // 後ろに下げた分だけスコアが増える
+            if (dragMgrY >= 0.99f && !piston)
+            {
+                AddGauge(1 - backPosY);
+                backPosY = 1.0f;
+                piston = true;
+            }
+            // きのこをどれだけ後ろに下げたかを取得
+            backPosY = Math.Min(backPosY, dragMgrY);
+            if (backPosY <= 0.0f)
+            {
+                piston = false;
+            }
+
+            yield return null;
+        }
+    }
+
 
     // エクスタシーゲームを増やす
     public void AddGauge(float add)
     {
         gaugeCounter.AddGauge(add);
+        simpleModel.SetMatsutakeScale(gaugeCounter.GaugeCount / 50f);
     }
 
     // ゲームクリアの判定

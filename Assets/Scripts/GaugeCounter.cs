@@ -17,7 +17,8 @@ public class GaugeCounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	}
+        //Debug.Log(gaugeCount);
+    }
 
     public void AddGauge(float add)
     {
