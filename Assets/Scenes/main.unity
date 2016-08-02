@@ -877,7 +877,7 @@ Prefab:
     - target: {fileID: 11484518, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: mocFile
       value: 
-      objectReference: {fileID: 4900000, guid: 529b93f09dbfc954d834f4feb59663f0, type: 3}
+      objectReference: {fileID: 4900000, guid: e7fb6126ce5d2414f879d9c9f9e615fe, type: 3}
     - target: {fileID: 11484518, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: textureFiles.Array.data[0]
       value: 
