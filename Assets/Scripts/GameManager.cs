@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 
     MatsutakeManager matsutakeManager;
     SimpleModel simpleModel;
+    AdonSpawner adonSpawner;
 
     bool gameStart = false;
 
@@ -27,7 +28,8 @@ public class GameManager : MonoBehaviour {
 
         // SimpleModelクラス（ルナチャ）を取得
         simpleModel = FindObjectOfType<SimpleModel>();
-        
+
+        adonSpawner = FindObjectOfType<AdonSpawner>();
     }
 
     // Update is called once per frame
@@ -76,6 +78,7 @@ public class GameManager : MonoBehaviour {
     {
         gaugeCounter.AddGauge(add);
         simpleModel.SetMatsutakeScale(gaugeCounter.GaugeCount / 50f);
+        adonSpawner.Spawn();
     }
 
     // ゲームクリアの判定
