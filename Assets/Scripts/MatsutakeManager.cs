@@ -8,7 +8,7 @@ public class MatsutakeManager : MonoBehaviour {
     Vector3 screenPoint;
 
     // ゲーム開始フラグが立つ位置
-    readonly Vector3 gameStartPosition = new Vector3(-0.02f, -0.5f, -5f);
+    readonly Vector3 gameStartPosition = new Vector3(-0.02f, -0.4f, -5f);
 
     // 上下の動ける下限・上限
     readonly float movableMaxY = Screen.height / 2.5f;
@@ -55,8 +55,8 @@ public class MatsutakeManager : MonoBehaviour {
                 transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
 
                 // ゲーム開始フラグが立つ位置にきのこが動いたら開始
-                if (Math.Abs(transform.position.x - gameStartPosition.x) <= 0.05f &&
-                    Math.Abs(transform.position.y - gameStartPosition.y) <= 0.05f)
+                if (Math.Abs(transform.position.x - gameStartPosition.x) <= 0.01f &&
+                    Math.Abs(transform.position.y - gameStartPosition.y) <= 0.02f)
                 {
                     Debug.Log("game start");
                     gameStart();

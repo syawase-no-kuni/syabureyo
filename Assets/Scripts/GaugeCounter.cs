@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GaugeCounter : MonoBehaviour {
@@ -11,9 +12,12 @@ public class GaugeCounter : MonoBehaviour {
 
     const float gaugeMax = 100.0f;
 
+    Slider slider;
+
 	// Use this for initialization
 	void Start () {
-	}
+        slider = FindObjectOfType<Slider>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,6 +27,7 @@ public class GaugeCounter : MonoBehaviour {
     public void AddGauge(float add)
     {
         gaugeCount += add;
+        slider.value = gaugeCount;
     }
 
     public bool isGaugeMax()

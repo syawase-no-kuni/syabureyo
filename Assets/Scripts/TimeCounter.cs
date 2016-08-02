@@ -13,15 +13,18 @@ public class TimeCounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        timeCount -= Time.deltaTime;
         if (timeCount <= 0.0f)
         {
             // 終了
             timeOutFlg = true;
         }
+        else
+        {
+            timeCount -= Time.deltaTime;
+        }
 
         //Debug.Log(timeCount);
-	}
+    }
 
     public bool isTimeOut()
     {
