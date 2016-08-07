@@ -78,30 +78,30 @@ public class SimpleModel : MonoBehaviour
         float my = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
 
         // 角度XY
-        live2DModel.setParamFloat("PARAM_ANGLE_X", dragMgr.getX() * 300);
-        live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 300);
+        live2DModel.setParamFloat("PARAM_ANGLE_X", mx * 30);
+        live2DModel.setParamFloat("PARAM_ANGLE_Y", my * 30);
 
         // 体X
-        live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", dragMgr.getX() * -10);
+        live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", mx * -10);
 
         // 目玉
-        live2DModel.setParamFloat("PARAM_EYE_BALL_X", dragMgr.getX());
-        live2DModel.setParamFloat("PARAM_EYE_BALL_Y", dragMgr.getY());
+        live2DModel.setParamFloat("PARAM_EYE_BALL_X", mx);
+        live2DModel.setParamFloat("PARAM_EYE_BALL_Y", my);
 
         // アホ毛(上)
-        live2DModel.setParamFloat("PARAM_AHOGE_TOP_ROTATE", dragMgr.getY());
+        live2DModel.setParamFloat("PARAM_AHOGE_TOP_ROTATE", my);
 
         //アホ毛(左上)
-        live2DModel.setParamFloat("PARAM_AHOGE_LEFT_ROTATE", dragMgr.getY());
+        live2DModel.setParamFloat("PARAM_AHOGE_LEFT_ROTATE", my);
 
         // 髪揺れ横(-1.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_HAIR_SIDE", -dragMgr.getX());
+        live2DModel.setParamFloat("PARAM_HAIR_SIDE", -mx);
 
         // 口の開閉(0.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -dragMgr.getY());
+        live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -my);
 
         // きのこ上下(-1.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", dragMgr.getY() * 300);
+        live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", my);
 
         // 羽
         // 後で修正する
