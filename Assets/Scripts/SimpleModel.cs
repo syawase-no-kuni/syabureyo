@@ -98,6 +98,8 @@ public class SimpleModel : MonoBehaviour
         live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -dragMgr.getY());
 
         // 羽
+        // 後で修正する
+        // 口に入れられたとき、一瞬ぴくっとなって元に戻るようにする
 
         // 羽右1 上下
         live2DModel.setParamFloat("PARAM_HANE_RIGHT_01_Y", haneMovePalam);

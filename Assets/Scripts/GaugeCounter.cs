@@ -9,6 +9,7 @@ public class GaugeCounter : MonoBehaviour {
     {
         get { return gaugeCount; }
     }
+    float gaugeCountBuf = 0.0f;
 
     const float gaugeMax = 100.0f;
 
@@ -22,12 +23,16 @@ public class GaugeCounter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //Debug.Log(gaugeCount);
+        if (gaugeCountBuf < gaugeCount)
+        {
+            gaugeCountBuf += (gaugeCount - gaugeCountBuf) / 20.0f;
+        }
+        slider.value = gaugeCountBuf;
     }
 
     public void AddGauge(float add)
     {
         gaugeCount += add;
-        slider.value = gaugeCount;
     }
 
     public bool isGaugeMax()
