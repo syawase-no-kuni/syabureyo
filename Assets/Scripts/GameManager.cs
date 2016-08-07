@@ -4,22 +4,35 @@ using System;
 
 public class GameManager : MonoBehaviour {
 
+    // ゲージ管理クラス
     GaugeCounter gaugeCounter;
+
+    // タイム管理クラス
     TimeCounter timeCounter;
 
+    // スライダーのグラデーション情報
+    [SerializeField]
+    UnityEngine.UI.Image outlineTop;
+
+    // 松茸管理クラス
     MatsutakeManager matsutakeManager;
+
+    // live2dモデルクラス
     SimpleModel simpleModel;
 
+    // ゲーム開始？
     bool gameStart = false;
 
+    // 口に入れられた状態か（スコア計算用）
     bool piston = false;
     float backPosY = -1f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         // GameManagerオブジェクト自身が持っている他のクラスはこの書き方で取得
         gaugeCounter = GetComponent<GaugeCounter>();
         timeCounter = GetComponent<TimeCounter>();
+        timeCounter.isGameStart += isGameStart;
 
         // ゲーム開始時のまつたけクラスのgameStartイベントをフック
         matsutakeManager = FindObjectOfType<MatsutakeManager>();
@@ -27,6 +40,7 @@ public class GameManager : MonoBehaviour {
 
         // SimpleModelクラス（ルナチャ）を取得
         simpleModel = FindObjectOfType<SimpleModel>();
+        simpleModel.isGameStart += isGameStart;
         
     }
 
@@ -40,6 +54,7 @@ public class GameManager : MonoBehaviour {
         simpleModel.GameStart();
         gameStart = true;
         StartCoroutine("GameMain");
+        timeCounter.StartTimeCount();
     }
 
     // ゲームメインループ
@@ -49,13 +64,13 @@ public class GameManager : MonoBehaviour {
         {
             // きのこのY座標を取得
             float dragMgrY = simpleModel.GetDragManagerY();
-            Debug.Log(dragMgrY);
+            //Debug.Log(dragMgrY);
 
             // きのこを口に入れたらピストンフラグをオンにし、
             // 後ろに下げた分だけスコアが増える
             if (dragMgrY >= 0.99f && !piston)
             {
-                AddGauge(1 - backPosY);
+                AddGauge((1 - backPosY) * 3f);
                 backPosY = 1.0f;
                 piston = true;
             }
@@ -66,16 +81,31 @@ public class GameManager : MonoBehaviour {
                 piston = false;
             }
 
+            // ゲージの枠の色を変化
+            SetSliderOutlineColor();
+
             yield return null;
         }
     }
 
+    // スライダーの枠の色を徐々に赤くする
+    void SetSliderOutlineColor()
+    {
+        Debug.Log(timeCounter.getNormalizedTime());
+        outlineTop.fillAmount = timeCounter.getNormalizedTime();
+    }
 
-    // エクスタシーゲームを増やす
+    // エクスタシーゲージを増やす
     public void AddGauge(float add)
     {
         gaugeCounter.AddGauge(add);
         simpleModel.SetMatsutakeScale(gaugeCounter.GaugeCount / 50f);
+    }
+
+    // ゲーム開始の判定
+    public bool isGameStart()
+    {
+        return gameStart;
     }
 
     // ゲームクリアの判定

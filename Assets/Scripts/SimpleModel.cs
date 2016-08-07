@@ -17,6 +17,9 @@ public class SimpleModel : MonoBehaviour
     private Matrix4x4 live2DCanvasPos;
 
     float haneMovePalam;
+    float haneMoveRad;
+
+    public event Func<bool> isGameStart;
 
     void Start()
     {
@@ -46,8 +49,8 @@ public class SimpleModel : MonoBehaviour
         live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", -1.0f);
 
         //涙の大きさ(0.0f:小～1.0f:大)
-        live2DModel.setParamFloat("PARAM_NAMIDA_SCALE_RIGHT", 0.5f);
-        live2DModel.setParamFloat("PARAM_NAMIDA_SCALE_LEFT", 0.5f);
+        live2DModel.setParamFloat("PARAM_NAMIDA_SCALE_RIGHT", 1f);
+        live2DModel.setParamFloat("PARAM_NAMIDA_SCALE_LEFT", 1f);
     }
 
 
@@ -97,22 +100,40 @@ public class SimpleModel : MonoBehaviour
         // 羽
 
         // 羽右1 上下
-        live2DModel.setParamFloat("PARAM_HANE_RIGHT_01_Y", Mathf.Sin(haneMovePalam));
+        live2DModel.setParamFloat("PARAM_HANE_RIGHT_01_Y", haneMovePalam);
         // 羽右2 上下
-        live2DModel.setParamFloat("PARAM_HANE_RIGHT_02_Y", Mathf.Sin(haneMovePalam));
+        live2DModel.setParamFloat("PARAM_HANE_RIGHT_02_Y", haneMovePalam);
         // 羽左1 上下
-        live2DModel.setParamFloat("PARAM_HANE_LEFT_01_Y", Mathf.Sin(haneMovePalam));
+        live2DModel.setParamFloat("PARAM_HANE_LEFT_01_Y", haneMovePalam);
         // 羽左2 上下
-        live2DModel.setParamFloat("PARAM_HANE_LEFT_02_Y", Mathf.Sin(haneMovePalam));
+        live2DModel.setParamFloat("PARAM_HANE_LEFT_02_Y", haneMovePalam);
 
-        if (dragMgr.getY() >= 1.0f)
+        if (dragMgr.getY() >= 0.99f && isGameStart())
         {
-            haneMovePalam = 1.0f;
+            if (haneMovePalam <= 0.95f)
+            {
+                if (haneMoveRad >= Mathf.PI / 2.0f && haneMoveRad <= Mathf.PI * 1.5f)
+                {
+                    haneMoveRad -= 0.6f;
+                }
+                else
+                {
+                    haneMoveRad += 0.6f;
+                }
+            }
         }
         else
         {
-            haneMovePalam += 0.1f;
+            haneMoveRad += 0.08f;
         }
+
+        if (haneMoveRad >= 2 * Mathf.PI)
+        {
+            haneMoveRad -= 2 * Mathf.PI;
+        }
+
+        haneMovePalam = Mathf.Sin(haneMoveRad);
+        //Debug.Log("hane : " + haneMoveRad + ", " + haneMovePalam);
 
         double timeSec = UtSystem.getUserTimeMSec() / 1000.0;
         double t = timeSec * 2 * Math.PI;
