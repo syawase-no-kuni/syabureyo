@@ -105,7 +105,14 @@ public class SimpleModel : MonoBehaviour
         // 羽左2 上下
         live2DModel.setParamFloat("PARAM_HANE_LEFT_02_Y", Mathf.Sin(haneMovePalam));
 
-        haneMovePalam += (dragMgr.getY() >= 1.0f ? 0.2f : 0.0f);
+        if (dragMgr.getY() >= 1.0f)
+        {
+            haneMovePalam = 1.0f;
+        }
+        else
+        {
+            haneMovePalam += 0.1f;
+        }
 
         double timeSec = UtSystem.getUserTimeMSec() / 1000.0;
         double t = timeSec * 2 * Math.PI;
