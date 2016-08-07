@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using live2d;
 using live2d.framework;
 
@@ -21,10 +22,36 @@ public class SimpleModel : MonoBehaviour
 
     public event Func<bool> isGameStart;
 
+    public int TestY = 0;
+
     void Start()
     {
         Live2D.init();
         load();
+
+        StartCoroutine(TestCoroutine());
+    }
+
+    private IEnumerator TestCoroutine()
+    {
+        Debug.Log("Start TestCoroutine");
+
+        while(true)
+        {
+            if(Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                TestY = 100;
+            }
+            if(Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                TestY = -100;
+            }
+            if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                TestY = 0;
+            }
+            yield return null;
+        }
     }
 
 
@@ -76,7 +103,8 @@ public class SimpleModel : MonoBehaviour
 
         // 角度XY
         live2DModel.setParamFloat("PARAM_ANGLE_X", dragMgr.getX() * 30);
-        live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 30);
+//        live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 30);
+        live2DModel.setParamFloat("PARAM_ANGLE_Y", TestY);
 
         // 体X
         live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", dragMgr.getX() * -10);
