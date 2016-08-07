@@ -70,9 +70,16 @@ public class GameManager : MonoBehaviour {
             // 後ろに下げた分だけスコアが増える
             if (dragMgrY >= 0.99f && !piston)
             {
-                AddGauge((1 - backPosY) * 3f);
+                AddGauge((1 - backPosY) * 2f);
                 backPosY = 1.0f;
                 piston = true;
+
+                // エクスタシーゲージが満タンになった
+                if (isGameClear())
+                {
+                    
+                }
+
             }
             // きのこをどれだけ後ろに下げたかを取得
             backPosY = Math.Min(backPosY, dragMgrY);
@@ -100,6 +107,7 @@ public class GameManager : MonoBehaviour {
     {
         gaugeCounter.AddGauge(add);
         simpleModel.SetMatsutakeScale(gaugeCounter.GaugeCount / 50f);
+        simpleModel.SetFaceRed(gaugeCounter.GaugeCount / 100f);
     }
 
     // ゲーム開始の判定

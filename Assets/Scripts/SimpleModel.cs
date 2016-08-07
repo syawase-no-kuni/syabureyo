@@ -74,9 +74,12 @@ public class SimpleModel : MonoBehaviour
 
         dragMgr.update();
 
+        float mx = pos.x / Screen.width * 2 - 1;
+        float my = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
+
         // 角度XY
-        live2DModel.setParamFloat("PARAM_ANGLE_X", dragMgr.getX() * 30);
-        live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 30);
+        live2DModel.setParamFloat("PARAM_ANGLE_X", dragMgr.getX() * 300);
+        live2DModel.setParamFloat("PARAM_ANGLE_Y", dragMgr.getY() * 300);
 
         // 体X
         live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", dragMgr.getX() * -10);
@@ -96,6 +99,9 @@ public class SimpleModel : MonoBehaviour
 
         // 口の開閉(0.0f～1.0f)
         live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -dragMgr.getY());
+
+        // きのこ上下(-1.0f～1.0f)
+        live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", dragMgr.getY() * 300);
 
         // 羽
         // 後で修正する
@@ -170,5 +176,10 @@ public class SimpleModel : MonoBehaviour
     public void SetMatsutakeScale(float scale)
     {
         live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", scale);
+    }
+
+    public void SetFaceRed(float face)
+    {
+        live2DModel.setParamFloat("PARAM_FACE_RED", face);
     }
 }
