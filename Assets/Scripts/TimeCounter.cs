@@ -4,8 +4,11 @@ using System;
 
 public class TimeCounter : MonoBehaviour {
 
-    const float maxTime = 30.0f;
-    float timeCount = maxTime;
+    const float maxTime = 20.0f;
+
+    [SerializeField]
+    float timeCount;
+
     bool timeOutFlg = false;
 
     public event Func<bool> isGameStart;
@@ -20,6 +23,7 @@ public class TimeCounter : MonoBehaviour {
 
     public void StartTimeCount()
     {
+        timeCount = maxTime;
         StartCoroutine("TimeCount");
     }
 

@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour {
     bool piston = false;
     float backPosY = -1f;
 
+    // スコアの伸び方係数
+    float scoreWeight = 0.7f;
+
     // Use this for initialization
     void Start () {
         // GameManagerオブジェクト自身が持っている他のクラスはこの書き方で取得
@@ -63,26 +66,28 @@ public class GameManager : MonoBehaviour {
         while (true)
         {
             // きのこのY座標を取得
-            float dragMgrY = simpleModel.GetDragManagerY();
+            float mousePostionY = simpleModel.MousePostionY;
             //Debug.Log(dragMgrY);
 
             // きのこを口に入れたらピストンフラグをオンにし、
             // 後ろに下げた分だけスコアが増える
-            if (dragMgrY >= 0.99f && !piston)
+            if (mousePostionY >= 0.99f && !piston)
             {
-                AddGauge((1 - backPosY) * 2f);
+                AddGauge((1 - backPosY) * scoreWeight);
+                scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 100f;
+
                 backPosY = 1.0f;
                 piston = true;
 
                 // エクスタシーゲージが満タンになった
                 if (isGameClear())
                 {
-                    
+                    Debug.Log("iku");
                 }
 
             }
             // きのこをどれだけ後ろに下げたかを取得
-            backPosY = Math.Min(backPosY, dragMgrY);
+            backPosY = Math.Min(backPosY, mousePostionY);
             if (backPosY <= 0.0f)
             {
                 piston = false;

@@ -16,6 +16,12 @@ public class SimpleModel : MonoBehaviour
     private L2DPhysics physics;
     private Matrix4x4 live2DCanvasPos;
 
+    float mousePositionX, mousePositionY;
+    public float MousePostionY
+    {
+        get { return mousePositionY; }
+    }
+
     float haneMovePalam;
     float haneMoveRad;
 
@@ -74,34 +80,34 @@ public class SimpleModel : MonoBehaviour
 
         dragMgr.update();
 
-        float mx = pos.x / Screen.width * 2 - 1;
-        float my = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
+        mousePositionX = pos.x / Screen.width * 2 - 1;
+        mousePositionY = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
 
         // 角度XY
-        live2DModel.setParamFloat("PARAM_ANGLE_X", mx * 30);
-        live2DModel.setParamFloat("PARAM_ANGLE_Y", my * 30);
+        live2DModel.setParamFloat("PARAM_ANGLE_X", mousePositionX * 30);
+        live2DModel.setParamFloat("PARAM_ANGLE_Y", mousePositionY * 30);
 
         // 体X
-        live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", mx * -10);
+        live2DModel.setParamFloat("PARAM_BODY_ANGLE_X", mousePositionX * -10);
 
         // 目玉
-        live2DModel.setParamFloat("PARAM_EYE_BALL_X", mx);
-        live2DModel.setParamFloat("PARAM_EYE_BALL_Y", my);
+        live2DModel.setParamFloat("PARAM_EYE_BALL_X", mousePositionX);
+        live2DModel.setParamFloat("PARAM_EYE_BALL_Y", mousePositionY);
 
         // アホ毛(上)
-        live2DModel.setParamFloat("PARAM_AHOGE_TOP_ROTATE", my);
+        live2DModel.setParamFloat("PARAM_AHOGE_TOP_ROTATE", mousePositionY);
 
         //アホ毛(左上)
-        live2DModel.setParamFloat("PARAM_AHOGE_LEFT_ROTATE", my);
+        live2DModel.setParamFloat("PARAM_AHOGE_LEFT_ROTATE", mousePositionY);
 
         // 髪揺れ横(-1.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_HAIR_SIDE", -mx);
+        live2DModel.setParamFloat("PARAM_HAIR_SIDE", -mousePositionX);
 
         // 口の開閉(0.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -my);
+        live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", -mousePositionY);
 
         // きのこ上下(-1.0f～1.0f)
-        live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", my);
+        live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", mousePositionY);
 
         // 羽
         // 後で修正する
