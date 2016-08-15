@@ -26,6 +26,10 @@ public class TimeCounter : MonoBehaviour {
         timeCount = maxTime;
         StartCoroutine("TimeCount");
     }
+    public void EndTimeCount()
+    {
+        StopCoroutine("TimeCount");
+    }
 
     public IEnumerator TimeCount()
     {

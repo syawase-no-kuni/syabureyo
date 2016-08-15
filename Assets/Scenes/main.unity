@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 183087296}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - 224: {fileID: 240916505}
   - 222: {fileID: 240916507}
   - 114: {fileID: 240916506}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - 224: {fileID: 544821709}
   - 222: {fileID: 544821712}
   - 114: {fileID: 544821711}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - 224: {fileID: 691336309}
   - 222: {fileID: 691336311}
   - 114: {fileID: 691336310}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: OutlineTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   - 224: {fileID: 756022555}
   - 222: {fileID: 756022557}
   - 114: {fileID: 756022556}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +608,7 @@ GameObject:
   - 224: {fileID: 1541845464}
   - 114: {fileID: 1541845466}
   - 222: {fileID: 1541845467}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1593697988}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -5}
+  m_LocalPosition: {x: 0, y: 1, z: -9.5}
   m_LocalScale: {x: 0.18, y: 0.4, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -789,7 +789,7 @@ GameObject:
   - 223: {fileID: 2046360053}
   - 114: {fileID: 2046360052}
   - 114: {fileID: 2046360051}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,9 +841,9 @@ Canvas:
   m_GameObject: {fileID: 2046360050}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1531025115}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -930,7 +930,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 429578, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2.08
       objectReference: {fileID: 0}
     - target: {fileID: 429578, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: m_LocalRotation.x
@@ -955,11 +955,19 @@ Prefab:
     - target: {fileID: 11484518, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: mocFile
       value: 
-      objectReference: {fileID: 4900000, guid: 4f7d0acbd0177f148934b9b5a638424b, type: 3}
+      objectReference: {fileID: 4900000, guid: d5866c14223b18f4cb794138f6591555, type: 3}
     - target: {fileID: 11484518, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: textureFiles.Array.data[0]
       value: 
       objectReference: {fileID: 2800000, guid: 61554143705fcc74f811a513ff26d254, type: 3}
+    - target: {fileID: 173796, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 173796, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
   m_IsPrefabParent: 0

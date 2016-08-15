@@ -17,15 +17,29 @@ public class SimpleModel : MonoBehaviour
     private Matrix4x4 live2DCanvasPos;
 
     float mousePositionX, mousePositionY;
+    public float MousePostionX
+    {
+        get { return mousePositionX; }
+        set { mousePositionX = value; }
+    }
     public float MousePostionY
     {
         get { return mousePositionY; }
+        set { mousePositionY = value; }
+    }
+
+    float matsutakeSize = -1f;
+    public float MatsutakeSize
+    {
+        get { return matsutakeSize; }
+        set { matsutakeSize = value; }
     }
 
     float haneMovePalam;
     float haneMoveRad;
 
     public event Func<bool> isGameStart;
+    public event Func<bool> isGameEnd;
 
     void Start()
     {
@@ -52,7 +66,7 @@ public class SimpleModel : MonoBehaviour
         if (physicsFile != null) physics = L2DPhysics.load(physicsFile.bytes);
 
         // 松茸の大きさ(0.0f:小～1.0f:大)
-        live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", -1.0f);
+        matsutakeSize = -1f;
 
         //涙の大きさ(0.0f:小～1.0f:大)
         live2DModel.setParamFloat("PARAM_NAMIDA_SCALE_RIGHT", 1f);
@@ -76,12 +90,15 @@ public class SimpleModel : MonoBehaviour
 
         var pos = Input.mousePosition;
         //        dragMgr.Set(pos.x / Screen.width * 2 - 1, pos.y / Screen.height * 4 - 1);
-        dragMgr.Set(pos.x / Screen.width * 2 - 1, Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1));
+        //dragMgr.Set(pos.x / Screen.width * 2 - 1, Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1));
 
-        dragMgr.update();
-
-        mousePositionX = pos.x / Screen.width * 2 - 1;
-        mousePositionY = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
+        //dragMgr.update();
+        
+        if (!isGameEnd())
+        {
+            mousePositionX = pos.x / Screen.width * 2 - 1;
+            mousePositionY = Mathf.Clamp((pos.y - min) * 2 / (max - min) - 1, -1, 1);
+        }
 
         // 角度XY
         live2DModel.setParamFloat("PARAM_ANGLE_X", mousePositionX * 30);
@@ -93,7 +110,7 @@ public class SimpleModel : MonoBehaviour
         // 目玉
         live2DModel.setParamFloat("PARAM_EYE_BALL_X", mousePositionX);
         live2DModel.setParamFloat("PARAM_EYE_BALL_Y", mousePositionY);
-
+        
         // アホ毛(上)
         live2DModel.setParamFloat("PARAM_AHOGE_TOP_ROTATE", mousePositionY);
 
@@ -109,6 +126,9 @@ public class SimpleModel : MonoBehaviour
         // きのこ上下(-1.0f～1.0f)
         live2DModel.setParamFloat("PARAM_MATSUTAKE_Y", mousePositionY);
 
+        // きのこ大きさ(0.0f～1.0f)
+        live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", matsutakeSize);
+
         // 羽
         // 後で修正する
         // 口に入れられたとき、一瞬ぴくっとなって元に戻るようにする
@@ -122,6 +142,7 @@ public class SimpleModel : MonoBehaviour
         // 羽左2 上下
         live2DModel.setParamFloat("PARAM_HANE_LEFT_02_Y", haneMovePalam);
 
+        /*
         if (dragMgr.getY() >= 0.99f && isGameStart())
         {
             if (haneMovePalam <= 0.95f)
@@ -148,6 +169,7 @@ public class SimpleModel : MonoBehaviour
 
         haneMovePalam = Mathf.Sin(haneMoveRad);
         //Debug.Log("hane : " + haneMoveRad + ", " + haneMovePalam);
+        */
 
         double timeSec = UtSystem.getUserTimeMSec() / 1000.0;
         double t = timeSec * 2 * Math.PI;
@@ -171,7 +193,7 @@ public class SimpleModel : MonoBehaviour
     public void GameStart()
     {
         // 松茸の大きさ(0.0f:小～1.0f:大)
-        live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", 0.0f);
+        matsutakeSize = 0f;
     }
 
     public float GetDragManagerY()
@@ -181,7 +203,7 @@ public class SimpleModel : MonoBehaviour
 
     public void SetMatsutakeScale(float scale)
     {
-        live2DModel.setParamFloat("PARAM_MATSUTAKE_SCALE", scale);
+        matsutakeSize = Mathf.Clamp(scale, 0, 1);
     }
 
     public void SetFaceRed(float face)

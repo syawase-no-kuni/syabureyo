@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour {
     // ゲーム開始？
     bool gameStart = false;
 
+    // ゲーム終了？
+    bool gameEnd = false;
+
     // 口に入れられた状態か（スコア計算用）
     bool piston = false;
     float backPosY = -1f;
@@ -44,7 +47,8 @@ public class GameManager : MonoBehaviour {
         // SimpleModelクラス（ルナチャ）を取得
         simpleModel = FindObjectOfType<SimpleModel>();
         simpleModel.isGameStart += isGameStart;
-        
+        simpleModel.isGameEnd += isGameEnd;
+
     }
 
     // Update is called once per frame
@@ -74,7 +78,7 @@ public class GameManager : MonoBehaviour {
             if (mousePostionY >= 0.99f && !piston)
             {
                 AddGauge((1 - backPosY) * scoreWeight);
-                scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 100f;
+                scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 10f;
 
                 backPosY = 1.0f;
                 piston = true;
@@ -83,6 +87,9 @@ public class GameManager : MonoBehaviour {
                 if (isGameClear())
                 {
                     Debug.Log("iku");
+                    timeCounter.EndTimeCount();
+                    StartCoroutine("GameClear");
+                    break;
                 }
 
             }
@@ -93,8 +100,76 @@ public class GameManager : MonoBehaviour {
                 piston = false;
             }
 
+            // 時間切れ処理
+            if (TimeOut())
+            {
+                Debug.Log("time out");
+                StartCoroutine("GameFailed");
+                break;
+            }
+
             // ゲージの枠の色を変化
             SetSliderOutlineColor();
+
+            yield return null;
+        }
+    }
+
+    // ゲームクリア時
+    IEnumerator GameClear()
+    {
+        gameEnd = true;
+        for (int i = 0; i < 20; i++)
+        {
+            yield return null;
+        }
+        var screenOverlay = Camera.main.GetComponent<UnityStandardAssets.ImageEffects.ScreenOverlay>();
+        for (int i = 0; i < 60; i++)
+        {
+            screenOverlay.intensity += 0.05f;
+            yield return null;
+        }
+        for (int i = 0; i < 60; i++)
+        {
+            screenOverlay.intensity -= 0.05f;
+            yield return null;
+        }
+        while (true)
+        {
+            simpleModel.MousePostionX = 0.5f;
+
+            // きのこが徐々に小さく・下に落ちていく
+            if (simpleModel.MousePostionY > -1.0f)
+            {
+                simpleModel.MousePostionY -= (simpleModel.MousePostionY + 1.0f) / 60f;
+            }
+
+            yield return null;
+        }
+    }
+
+    // ゲームクリア失敗時
+    IEnumerator GameFailed()
+    {
+        gameEnd = true;
+        for (int i = 0; i < 30; i++)
+        {
+            yield return null;
+        }
+
+        while (true)
+        {
+            simpleModel.MousePostionX = 0.5f;
+
+            // きのこが徐々に小さく・下に落ちていく
+            if (simpleModel.MousePostionY > -1.0f)
+            {
+                simpleModel.MousePostionY -= (simpleModel.MousePostionY + 1.0f) / 60f;
+            }
+            if (simpleModel.MatsutakeSize > 0f)
+            {
+                simpleModel.SetMatsutakeScale(simpleModel.MatsutakeSize - simpleModel.MatsutakeSize / 60f);
+            }
 
             yield return null;
         }
@@ -121,6 +196,12 @@ public class GameManager : MonoBehaviour {
         return gameStart;
     }
 
+    // ゲーム終了の判定（成否問わず）
+    public bool isGameEnd()
+    {
+        return gameEnd;
+    }
+
     // ゲームクリアの判定
     public bool isGameClear()
     {
@@ -128,9 +209,9 @@ public class GameManager : MonoBehaviour {
     }
 
     // 制限時間終了
-    public void TimeOut()
+    public bool TimeOut()
     {
-        timeCounter.isTimeOut();
+        return timeCounter.isTimeOut();
     }
 
 
