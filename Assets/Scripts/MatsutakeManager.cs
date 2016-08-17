@@ -55,8 +55,8 @@ public class MatsutakeManager : MonoBehaviour {
                 transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
 
                 // ゲーム開始フラグが立つ位置にきのこが動いたら開始
-                if (Math.Abs(transform.position.x - gameStartPosition.x) <= 0.01f &&
-                    Math.Abs(transform.position.y - gameStartPosition.y) <= 0.02f)
+                if (Math.Abs(transform.position.x - gameStartPosition.x) <= 0.02f &&
+                    Math.Abs(transform.position.y - gameStartPosition.y) <= 0.03f)
                 {
                     Debug.Log("game start");
                     gameStart();

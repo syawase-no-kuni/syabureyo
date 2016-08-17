@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour {
     // スコアの伸び方係数
     float scoreWeight = 0.7f;
 
+    // ゲームクリア失敗時のリトライ画面
+    [SerializeField]
+    Canvas failedCanvas;
+
     // Use this for initialization
     void Start () {
         // GameManagerオブジェクト自身が持っている他のクラスはこの書き方で取得
@@ -48,7 +52,6 @@ public class GameManager : MonoBehaviour {
         simpleModel = FindObjectOfType<SimpleModel>();
         simpleModel.isGameStart += isGameStart;
         simpleModel.isGameEnd += isGameEnd;
-
     }
 
     // Update is called once per frame
@@ -156,8 +159,7 @@ public class GameManager : MonoBehaviour {
         {
             yield return null;
         }
-
-        while (true)
+        for (int i = 0; i < 180; i++)
         {
             simpleModel.MousePostionX = 0.5f;
 
@@ -170,9 +172,17 @@ public class GameManager : MonoBehaviour {
             {
                 simpleModel.SetMatsutakeScale(simpleModel.MatsutakeSize - simpleModel.MatsutakeSize / 60f);
             }
-
             yield return null;
         }
+        var screenOverlay = Camera.main.GetComponent<UnityStandardAssets.ImageEffects.ScreenOverlay>();
+        for (int i = 0; i < 60; i++)
+        {
+            screenOverlay.intensity -= 0.05f;
+            yield return null;
+        }
+        
+        // ゲームクリア失敗画面を表示
+        failedCanvas.gameObject.SetActive(true);
     }
 
     // スライダーの枠の色を徐々に赤くする

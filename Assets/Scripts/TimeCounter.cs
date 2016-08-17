@@ -4,7 +4,7 @@ using System;
 
 public class TimeCounter : MonoBehaviour {
 
-    const float maxTime = 20.0f;
+    const float maxTime = 5.0f;
 
     [SerializeField]
     float timeCount;
