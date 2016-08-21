@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour {
         simpleModel = FindObjectOfType<SimpleModel>();
         simpleModel.isGameStart += isGameStart;
         simpleModel.isGameEnd += isGameEnd;
+        simpleModel.isGameClear += isGameClear;
     }
 
     // Update is called once per frame
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour {
             if (mousePostionY >= 0.99f && !piston)
             {
                 AddGauge((1 - backPosY) * scoreWeight);
-                scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 10f;
+                scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 100f;
 
                 backPosY = 1.0f;
                 piston = true;
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator GameClear()
     {
         gameEnd = true;
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
         {
             yield return null;
         }
@@ -130,6 +131,10 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < 60; i++)
         {
             screenOverlay.intensity += 0.05f;
+            yield return null;
+        }
+        for (int i = 0; i < 60; i++)
+        {
             yield return null;
         }
         for (int i = 0; i < 60; i++)

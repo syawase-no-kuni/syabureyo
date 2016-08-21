@@ -886,8 +886,8 @@ RectTransform:
   - {fileID: 539394376}
   m_Father: {fileID: 1990645931}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.3, y: 0.35}
-  m_AnchorMax: {x: 0.7, y: 0.6}
+  m_AnchorMin: {x: 0.5966134, y: 0}
+  m_AnchorMax: {x: 1, y: 0.25612316}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1269,6 +1269,10 @@ Prefab:
     - target: {fileID: 173796, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 173796, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 94e750591b7535548a01f04c2dd2ee6b, type: 2}

@@ -40,6 +40,7 @@ public class SimpleModel : MonoBehaviour
 
     public event Func<bool> isGameStart;
     public event Func<bool> isGameEnd;
+    public event Func<bool> isGameClear;
 
     void Start()
     {
@@ -53,7 +54,7 @@ public class SimpleModel : MonoBehaviour
         live2DModel = Live2DModelUnity.loadModel(mocFile.bytes);
 
         // Live2Dのレンダーモード変更
-        live2DModel.setRenderMode(Live2D.L2D_RENDER_DRAW_MESH_NOW);
+        live2DModel.setRenderMode(Live2D.L2D_RENDER_DRAW_MESH);
 
         for (int i = 0; i < textureFiles.Length; i++)
         {
@@ -142,6 +143,17 @@ public class SimpleModel : MonoBehaviour
         // 羽左2 上下
         live2DModel.setParamFloat("PARAM_HANE_LEFT_02_Y", haneMovePalam);
 
+
+        if (isGameClear())
+        {
+            haneMovePalam = Mathf.Min(haneMovePalam + 0.2f, 1f);
+        }
+        else
+        {
+            float haneTime = UtSystem.getUserTimeMSec() / 2000.0f;
+            haneMovePalam = Mathf.Sin(haneTime);
+        }
+
         /*
         if (dragMgr.getY() >= 0.99f && isGameStart())
         {
@@ -180,6 +192,8 @@ public class SimpleModel : MonoBehaviour
         if (physics != null) physics.updateParam(live2DModel);
 
         live2DModel.update();
+
+        live2DModel.draw();
     }
 
 
