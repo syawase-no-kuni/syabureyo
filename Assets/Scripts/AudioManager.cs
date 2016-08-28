@@ -123,6 +123,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     }
     bool _PlayBgm(string key)
     {
+        Debug.Log("test");
         if(_poolBgm.ContainsKey(key) == false)
         {
             Debug.LogWarning("PlayBgm key=" + key + "は読み込まれていません！");

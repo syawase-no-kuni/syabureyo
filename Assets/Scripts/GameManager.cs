@@ -39,6 +39,15 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // BGMとSEを読み込む
+        AudioManager.LoadBgm("title", "bgm_maoudamashii_healing10");
+        AudioManager.LoadBgm("game", "bgm_maoudamashii_ethnic14");
+        AudioManager.LoadSe("tyupa", "lip01");
+        AudioManager.LoadSe("syasei", "eat03");
+
+        // タイトル画面の曲を流す
+        AudioManager.PlayBgm("title");
+
         // GameManagerオブジェクト自身が持っている他のクラスはこの書き方で取得
         gaugeCounter = GetComponent<GaugeCounter>();
         timeCounter = GetComponent<TimeCounter>();
@@ -66,6 +75,7 @@ public class GameManager : MonoBehaviour {
         gameStart = true;
         StartCoroutine("GameMain");
         timeCounter.StartTimeCount();
+        AudioManager.PlayBgm("game");
     }
 
     // ゲームメインループ
@@ -81,6 +91,8 @@ public class GameManager : MonoBehaviour {
             // 後ろに下げた分だけスコアが増える
             if (mousePostionY >= 0.99f && !piston)
             {
+                AudioManager.PlaySe("tyupa");
+
                 AddGauge((1 - backPosY) * scoreWeight);
                 scoreWeight = (100f - gaugeCounter.GaugeCount / 2.3f) / 100f;
 
@@ -133,10 +145,18 @@ public class GameManager : MonoBehaviour {
             screenOverlay.intensity += 0.05f;
             yield return null;
         }
-        for (int i = 0; i < 60; i++)
+
+        for (int i = 0; i < 4; i++)
         {
-            yield return null;
+            AudioManager.PlaySe("syasei");
+            AudioManager.PlaySe("syasei");
+            AudioManager.PlaySe("syasei");
+            for (int j = 0; j < 20; j++)
+            {
+                yield return null;
+            }
         }
+
         for (int i = 0; i < 60; i++)
         {
             screenOverlay.intensity -= 0.05f;
